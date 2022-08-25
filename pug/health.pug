@@ -1,0 +1,17 @@
+.section.health 
+  .section-title Health
+  .health-container
+    .hp-container
+      .hp-hover-input
+        +hover-input("hp")(type="number" class="hp-input")
+      .divide-sign /
+      .hp-hover-input
+        +hover-input("hp_max")(type="number" class="hp-input")
+
+    +button("long_rest") 
+      span Long Rest
+    .horizontal-line
+    .section-title Energy
+    +hover-input("energy")(type="number" class="hp-input")
+
++action(triggers.action(["long_rest"]), "long_rest", ["hp_max"])

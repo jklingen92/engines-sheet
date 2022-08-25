@@ -1,0 +1,545 @@
+// Variables
+$column-1-width: 100px;
+$column-2-width: 200px;
+$column-3-width: 300px;
+$column-4-width: 200px;
+$column-gap: 5px;
+$section-gap: 5px;
+
+$param-height: 40px;
+$param-gap: 10px;
+
+$roll-twenty-roll-highlight-color: #fef68e;
+
+// These mixin allow inputs to be hidden and restored while remaining in the form for tabbing
+@mixin hidden {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    display: inline;
+    position: absolute;
+    pointer-events: none;
+}
+
+@mixin shown {
+    opacity: 1;
+    width: auto;
+    height: auto;
+    display: block;
+    position: static;
+    pointer-events: auto;
+}
+
+button.sheet-text-btn {
+    background-color: transparent;
+    color: black;
+    border: none;
+    background-image: none;
+    text-shadow: none;
+    box-shadow: none;
+    padding: 0px;
+    margin: 0px;
+
+    &:hover {
+        color: red;
+    }
+
+    &::before {
+        content: "" !important;
+    }
+}
+
+button.sheet-blind-btn {
+    color: white;
+    background-color: rgb(0, 0, 0, 1);
+    transition: none;
+    background-position: 0;
+    background-image: none;
+
+    &:hover {
+        color: white;
+        background-color: rgb(20, 20, 20, 1);
+    }
+}
+
+.sheet-section {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: $section-gap;
+
+    .sheet-section-title {
+        text-align: center;
+        font-weight: bold;
+    }
+}
+
+.sheet-column {
+    margin: 0 $column-gap;
+}
+
+.sheet-hover-input {
+    input {
+        @include hidden();
+
+        &:focus {
+            @include shown();
+        }
+    }
+
+    &:hover input {
+        @include shown();
+    }
+
+    .sheet-display {
+        @include shown();
+    }
+
+    &:hover .sheet-display {
+        @include hidden();
+    }
+
+    input:focus ~ .sheet-display {
+        @include hidden;
+    }
+}
+
+.sheet-hidden {
+    @include hidden();
+}
+
+.sheet-horizontal-line {
+    width: 90%;
+    border-bottom: 1px solid black;
+    margin: 20px 0;
+}
+
+.sheet-initialize {
+    .sheet-initialize-screen {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 55px;;
+        background-color: #666;
+        opacity: 50%;
+        z-index: 100;
+    }
+
+    .sheet-initialize-modal {
+        display: none;
+    }
+
+    input[value=""] ~ .sheet-initialize-screen {
+        display: flex !important;
+    }
+
+    input[value=""] ~ .sheet-initialize-modal {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 55px;;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        z-index: 101;
+
+        .sheet-content {
+            width: 200px;
+            height: 200px;
+            background-color: white;
+            border: 3px solid black;
+            border-radius: 5px;
+            margin: auto;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+    }
+}
+
+.sheet-header {
+    .sheet-nameplate {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.sheet-body {
+    display: flex;
+
+    .sheet-column-1 {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: space-between;
+        width: $column-1-width;
+
+        .sheet-spec-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            margin: 5px 5px 20px;
+            position: relative;
+
+            .sheet-spec-label {
+                font-size: 1em;
+                font-weight: bold;
+            }
+
+            .sheet-spec {
+                font-size: 4em;
+            }
+
+            .sheet-spec-base {
+                width: 45%;
+                height: 25%;
+                border: 1px solid #666;
+                border-radius: 50%;
+                z-index: 2;
+                position: absolute;
+                bottom: -15%;
+                left: 26%;
+                background-color: white;
+                text-align: center;
+
+                .sheet-base-input {
+                    &:hover input,
+                    input:focus {
+                        width: 140%;
+                    }
+                    
+                    .sheet-display {
+                        font-size: 1.2em;
+                    }
+                }
+            }
+        }
+    }
+
+    .sheet-column-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: $column-2-width;
+
+        .sheet-parameter {
+            height: $param-height;
+            margin-bottom: $param-gap;
+            position: relative;
+
+            .sheet-value {
+                border: 2px solid black;
+                border-radius: 50%;
+                height: $param-height;
+                width: $param-height;
+                background-color: white;
+                position: relative;
+                z-index: 2;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .sheet-hover-input {
+                    margin-top: $param-height * 0.125;
+
+                    input {
+                        width: 120%
+                    }
+
+                    .sheet-display {
+                        font-size: 1.6em;
+                    }
+                }
+            }
+
+            .sheet-label {
+                height: $param-height * 0.75;
+                width: $column-2-width * 0.8 - $column-gap; 
+                border: 1px solid black;
+                border-radius: 5px;
+                top: $param-height * 0.125;
+                left: $column-2-width * 0.1;
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                padding-left: $column-2-width * 0.1;
+            }
+        }
+
+        .sheet-saving-throws, .sheet-skills {
+            width: 100%;
+
+            td.sheet-checkboxes {
+                width: 15%;
+            }
+            td.sheet-display {
+                width: 15%;
+                text-align: center;
+            }
+            td.sheet-label {
+                width: 70%;
+                font-size: 0.8em;
+
+                .sheet-source-spec {
+                    font-style: italic;
+                }
+            }
+        }
+    }
+
+    .sheet-column-3 {
+        width: $column-3-width;
+
+        .sheet-speed {
+            .sheet-speed-container {
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+
+                .sheet-speed-side-container {
+                    text-align: center;
+                }
+
+                .sheet-pipe {
+                    font-size: 4em;
+                }
+
+                .sheet-speed-input {    
+                    height: 80px;
+
+                    input {
+                        width: 80px;
+                        padding: 20px 0 20px 20px;
+                    }
+                }
+
+                .sheet-display {
+                    font-size: 4em;
+                }   
+            }
+        }
+
+        .sheet-health {
+            .sheet-health-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .sheet-hp-container {
+                    width: 90%;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    
+                    .sheet-divide-sign {
+                        font-size: 4em;
+                    }
+                }
+
+                div.sheet-hp-input {    
+                    height: 80px;
+
+                    input {
+                        width: 80px;
+                        padding: 20px 0 20px 20px;
+                    }
+                }
+
+                .sheet-display {
+                    font-size: 4em;
+                }    
+                       
+            }
+        }
+    }
+
+    .sheet-column-4 {
+        width: $column-4-width
+    }
+
+    .sheet-notes {
+        width: 100%;
+    }
+}
+
+.sheet-health-container {
+    border: 2px
+}
+
+.sheet-attacks {
+    .sheet-attack {
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px;
+        margin-bottom: 5px;
+
+        .sheet-display {
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            font-size: 1.2em;
+
+            .sheet-atk-roll {
+                display: flex;
+                justify-content: space-between;
+
+                .sheet-atk-name {
+                    font-size: small;
+                }
+            }
+
+            .sheet-dmg-roll {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+
+        .sheet-options-toggle {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+
+            ~ .sheet-options{
+                @include hidden();
+            }
+        }
+
+        .sheet-options-toggle:checked ~ .sheet-options {
+            @include shown();
+        }
+
+        .sheet-options {
+            .sheet-dmg-diecount-input {
+                width: 20%;
+            }
+
+            .sheet-dmg-die-input {
+                width: 20%
+            }
+
+            .sheet-dmg-bonus-input {
+                width: 20%
+            }
+
+            .sheet-dmg-type-input {
+                width: 30%
+            }
+        }
+    }
+}
+
+.sheet-tier {
+    height: $param-height;
+    margin-bottom: 10px;
+    position: relative;
+
+    .sheet-label {
+        height: $param-height * 0.75;
+        width: $column-4-width * 0.6 - $column-gap; 
+        border: 1px solid black;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 0 20px;
+
+        .sheet-info {
+            margin-right: $column-4-width * 0.1;
+            font-weight: bold;
+            cursor: pointer;
+            
+            &:hover {
+                color:#666;
+            }
+        }
+    }
+
+    .sheet-value {
+        border: 2px solid black;
+        border-radius: 50%;
+        height: 100%;
+        width: $column-4-width * 0.3;
+        background-color: white;
+        position: absolute;
+        right: 0;
+        top: -$param-height * 0.125;
+        z-index: 2;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.6em;
+
+        .sheet-hover-input {
+            margin-top: 5px;
+
+            input {
+                width: 100%
+            }
+
+            .sheet-display {
+                font-size: 1.6em;
+            }
+        }
+    }
+}
+
+.sheet-rolltemplate-simple, .sheet-rolltemplate-chat, .sheet-rolltemplate-attack {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+
+    .sheet-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+
+    .sheet-hit-tiers {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        font-weight: bold;
+    }
+}
+
+.sheet-rolltemplate-blind {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+
+    .sheet-header {
+        display: flex;
+        justify-content: space-between; 
+        font-size: 1.4em;
+        font-weight: bold;
+
+        .sheet-results {
+            width: 100px;
+
+            .inlinerollresult {
+                background-color: black;
+                color: black;
+                padding: 5px;
+                text-align: right;
+                display: block;
+
+                &:hover {
+                    background-color: $roll-twenty-roll-highlight-color;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,116 @@
+
+mixin translate(value)
+  span(data-i18n=value)&attributes(attributes)
+
+mixin event(trigger, functionName, options)
+  script.event-script
+    | on("#{trigger.event}", () => {
+    |   const dependencies = [
+    if trigger.dependencies !== undefined
+      |
+      |     ...JSON.parse('!{trigger.dependencies}'),
+    if options.dependencies !== undefined
+      |
+      |     ...JSON.parse('!{JSON.stringify(options.dependencies)}')   
+    |
+    |   ] 
+    |   getAttrs(dependencies, values => {
+    |     const parsedValues = parseValues(values)
+    |
+    if options.target === undefined
+      |     functions['#{functionName}'](parsedValues)
+    else 
+      |     setAttrs({
+      |       #{options.target}: functions['#{functionName}'](parsedValues)
+      |     })
+    |
+    |   })
+    | })
+
+mixin update(target, event, functionName, dependencies)
+  +event(event, functionName, { target, dependencies })
+
+mixin action(event, functionName, dependencies)
+  +event(event, functionName, { dependencies })
+
+mixin chat(title, text)
+  button(type="roll" name=`chat_${title}` value=`&{template:chat} {{title=${title}}} {{text=${text}}}`)
+    block
+
+mixin macro(macro)
+  button(name=`${macro}`)
+    block
+
+mixin display(attr)
+  span(name=`attr_${attr}` title=`@{${attr}}`)&attributes(attributes)
+
+mixin input(attr)
+    input(name=`attr_${attr}` title=`@{${attr}}` value="")&attributes(attributes)
+
+mixin textarea(attr)
+    textarea(name=`attr_${attr}` title=`@{${attr}}` value="")&attributes(attributes)
+
+mixin button(action)
+  button(name=`act_${action}`, type="action")
+    block
+
+mixin roll(template, name, base, modifiers)
+  - const modifierString = modifiers.map(attr => `+@{${attr}}[${attr}]`).join("")
+  button(type="roll" name=`roll_${name}` value=`&{template:${template}} {{title=${name}}} {{roll=[[${base}${modifierString}]]}} {{name=@{character_name}}}`)&attributes(attributes)
+   block
+
+mixin blind(name, base, modifiers)
+  +roll("blind", name, base, modifiers)&attributes(attributes)
+    block 
+  
+mixin check(name, base, modifiers)
+  +roll("simple", name, base, modifiers)&attributes(attributes)
+    block
+
+mixin attack(name, bonus, decay, phys_dmg, elem_dmg)
+  - const modElem = `${elem_dmg.bonus}`
+  - const modPhys = `${phys_dmg.bonus}`
+  - const fullElem = `${elem_dmg.diecount}${elem_dmg.die}+${elem_dmg.bonus}`
+  - const fullPhys = `${phys_dmg.diecount}${phys_dmg.die}+${phys_dmg.bonus}`
+  - const critPhys = `[[${phys_dmg.diecount}*2]]${phys_dmg.die}+${phys_dmg.bonus}`
+  - const dubPhys = `[[${phys_dmg.diecount}*3]]${phys_dmg.die}+${phys_dmg.bonus}`
+  button(type="roll" name=`roll_${name}` value=`&{template:attack} {{title=${name}}} {{attack=[[1d20+${bonus}]]}} {{name=@{character_name}}} {{decay=${decay}}} {{elemType=${elem_dmg.type}}} {{physType=${phys_dmg.type}}} {{modElem=${modElem}}} {{modPhys=${modPhys}}} {{fullElem=${fullElem}}} {{fullPhys=${fullPhys}}} {{critPhys=${critPhys}}} {{dubPhys=${dubPhys}}}`)&attributes(attributes)
+    block
+
+mixin rolltemplate(name)
+  rolltemplate(class=`sheet-rolltemplate-${name}`)
+    block
+
+mixin select(attr, options, selected)
+  select(name=`attr_${attr}` title=`@{${attr}}`)&attributes(attributes)
+    if !Object.keys(options).includes("")
+      option(value="", data-i18n=`${attr}-title`)
+    for option in Object.keys(options)
+      if selected && selected === option
+        option(value=option, data-i18n=options[option], selected)
+      else
+        option(value=option, data-i18n=options[option])
+
+mixin repeat(name)
+  fieldset(class=`repeating_${_.toLower(name).replace(/[_]/g, "-")}`)
+    block
+
+mixin hover-input(attr)
+  .hover-input&attributes(attributes)
+    +input(attr)&attributes(attributes)
+    +display(attr)(class="display")
+
+mixin initiative()
+  button(type="roll" name=`roll_init` value=`&{template:simple} {{title=Init}} {{roll=[[1d20+handling_mod &{tracker}]]}} {{name=@{character_name}}}`)&attributes(attributes)
+    block
+
+mixin initialize()
+  .initialize
+    +input("initialized")(type="hidden") 
+    .initialize-screen
+    .initialize-modal
+      .content
+        | Welcome to E&E!
+        +button("initialize")
+          | Initialize character 
+        +action(triggers.action("initialize"), "initialize", ["initialized"])

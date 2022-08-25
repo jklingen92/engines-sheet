@@ -1,0 +1,95 @@
+.section.attacks
+  .section-title Attacks
+  +repeat("attacks")
+    .attack
+      .display
+        .atk-roll
+          .atk-name
+            +attack(
+              "@{atkname}", 
+              "@{atkbonus}", 
+              "@{atkdecay}", 
+              {
+                diecount: "@{phys-dmg-diecount}",
+                die: "@{phys-dmg-die}",
+                type: "@{phys-dmg-type}",
+                bonus: "@{phys-dmg-bonus}",
+              },
+              {
+                diecount: "@{elem-dmg-diecount}",
+                die: "@{elem-dmg-die}",
+                type: "@{elem-dmg-type}",
+                bonus: "@{elem-dmg-bonus}",
+              })(class="text-btn")
+              +display("atkname")
+          .atk-bonus +
+            +display("atkbonus")
+            | 
+            span to hit
+          .atk-decay
+            +display("atkdecay")
+            span E
+        .dmg-roll
+          .phys-dmg
+            +display("phys-dmg-diecount")
+            +display("phys-dmg-die")
+            span +
+            +display("phys-dmg-bonus")
+            +display("phys-dmg-type")
+          .elem-dmg
+            +display("elem-dmg-diecount")
+            +display("elem-dmg-die")
+            span +
+            +display("elem-dmg-bonus")
+            +display("elem-dmg-type")
+      +input("show_options")(type="checkbox" value="1").options-toggle
+      .options
+        hr
+        label Name:
+          +input("atkname")(type="text").atk-name-input
+        label Attack Bonus: 
+          +input("atkbonus")(type="number" value="0").atk-bonus-input
+        label Range: 
+          +input("atkrange")(value="5")
+          span ft.
+        label Decay: 
+          +input("atkdecay")(type="number" value="0").atk-decay-input
+        label Physical Dmg:
+          div.phys-dmg-input
+            +input("phys-dmg-diecount")(type="number" value="0").dmg-diecount-input
+            +select("phys-dmg-die", {
+              "d4": "d4", 
+              "d6": "d6", 
+              "d8": "d8", 
+              "d10": "d10", 
+              "d12": "d12", 
+            }, "d4").dmg-die-input
+            span + 
+            +input("phys-dmg-bonus")(type="number" value="0").dmg-bonus-input
+            +select("phys-dmg-type", {
+              "": "none-title",
+              "bludg": "bludg-title", 
+              "pierc": "pierc-title", 
+              "slash": "slash-title", 
+            }, "none").dmg-type-input
+        label Elemental Dmg: 
+          div.elem-dmg-input
+            +input("elem-dmg-diecount")(type="number" value="0").dmg-diecount-input
+            +select("elem-dmg-die", {
+              "d4": "d4", 
+              "d6": "d6", 
+              "d8": "d8", 
+              "d10": "d10", 
+              "d12": "d12", 
+            }, "d4").dmg-die-input
+            span + 
+            +input("elem-dmg-bonus")(type="number" value="0").dmg-bonus-input
+            +select("elem-dmg-type", {
+              "": "none-title",
+              "cold": "cold-title", 
+              "heat": "heat-title", 
+              "atom": "atom-title", 
+            }, "none").dmg-type-input
+            +textarea("attack-notes")
+
+          

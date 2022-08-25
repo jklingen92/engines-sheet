@@ -1,0 +1,19 @@
+.header
+  .section
+    .logo 
+    .nameplate 
+      label Name:
+        +input("character_name")
+      label Size:
+        +select("size", {
+          "tiny": "tiny-title", 
+          "small": "small-title", 
+          "medium": "medium-title", 
+          "large": "large-title", 
+          "huge": "huge-title", 
+          "gargantuan": "gargantuan-title"
+        }, "medium")
+      label Level:
+        +input("level")(type="number")
+      
++update("proficiency", triggers.change(["level"]), "calc_proficiency")

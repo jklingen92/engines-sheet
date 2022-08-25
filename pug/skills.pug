@@ -1,0 +1,58 @@
+
+mixin parameter(name)
+  .parameter 
+    .value
+      +hover-input(name)(type="number")&attributes(attributes)
+    .label
+      +translate(`${name}-up`)
+
+mixin checkbox-row(input, display)
+  tr&attributes(attributes)
+    td.checkboxes 
+      +input(input)(type="checkbox" value="1")
+    td.display
+      +display(display)
+    td.label 
+      block
+
+// Parameters
+for param in Object.keys(constants.parameters)
+  +parameter(param)
+
+// Saving Throws
+.section 
+  .section-title
+    +translate("saving-throws-up")(class="section-title")
+  table.saving-throws
+    tbody 
+      for spec in constants.specs 
+        +checkbox-row(`${spec}_save`, `${spec}_save_mod`)
+          +check(`${_.startCase(spec)} save`, "1d20", [`${spec}_save_mod`])(class="text-btn")
+            +translate(`${spec}-up`)
+
+        // Events
+        +update(`${spec}_save_mod`, triggers.change([`${spec}_mod`, `${spec}_save`, 'proficiency']), `calc_spec_save_mod`)
+    
+// Skills
+.section 
+  .section-title
+    +translate("skills-up")
+  table.skills
+    tbody 
+      for skill in Object.keys(constants.skills).sort() 
+        +checkbox-row(skill, `${skill}_mod`)
+          +check(`${_.startCase(skill)} check`, "1d20", [`${skill}_mod`])(class="text-btn")
+            +translate(`${skill}-title`)
+            |
+            | (
+            +translate(`${constants.skills[skill]}-short-title`)(class="source-spec")
+            | )
+            | 
+          if constants.blindSkills.includes(skill)
+            +blind(`${_.startCase(skill)} blind check`, "1d20", [`${skill}_mod`])(class="blind-btn")
+          
+
+        +update(`${skill}_mod`, triggers.change([`${constants.skills[skill]}_mod`, `${skill}`, 'proficiency']), `calc_${skill}_mod`)
+    
+
+  

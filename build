@@ -1,0 +1,6 @@
+echo "Building html..."
+node index.js > sheet/system.html
+echo "Building css..."
+sass system.scss > sheet/system.css
+echo "Building translation..." 
+node translate.js > sheet/translation.json

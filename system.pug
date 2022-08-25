@@ -1,0 +1,41 @@
+include pug/mixins.pug
+- let templateName = 'E&E';
+//- +hidden({name:'template start',value:`@{whisper}&{template:${templateName}} {{character_name=@{character_name}}} {{character_id=@{character_id}}}`})
+//- +hidden({name:'sheet state',value:'settings'})
+//- +hidden({name:'collapsed',value:''})
+
+main
+  .sheet
+    +initialize()
+    .container.npc
+
+    .container.character 
+      include pug/header.pug
+      .body    
+        .column.column-1
+          include pug/specs.pug
+    
+        .column.column-2 
+          include pug/skills.pug
+
+        .column.column-3
+          include pug/speed.pug
+          include pug/health.pug
+          include pug/attacks.pug
+
+        .column.column-4 
+          include pug/tiers.pug
+
+    .notes
+      include pug/notes.pug
+  
+  include pug/rolls.pug
+
+  script(type="text/worker") 
+    |
+    | const constants = JSON.parse('
+    != JSON.stringify(constants)
+    |')
+    |
+    include javascript/parse.js
+    include javascript/functions.js

@@ -1,0 +1,34 @@
+.rolltemplates 
+  
+  +rolltemplate("simple")
+    .header 
+      span.title {{title}}
+      span.results {{roll}}
+    .subtitle {{name}}
+  
+  +rolltemplate("chat")
+    .header 
+      span.title {{title}}
+    .subtitle {{text}}
+
+  +rolltemplate("blind")
+    .header 
+      span.title {{title}}
+      span.results {{roll}}
+    .subtitle {{name}}
+
+  +rolltemplate("attack")
+    .header 
+      span.title {{title}}
+      span.results {{attack}}
+    .subtitle {{name}} spends {{decay}} energy
+    .hit-tiers 
+      | {{#elemType}}
+      div [Glance](`/me {{modElem}} {{elemType}})
+      | {{/elemType}}
+      div [Block](`/me {{#physType}}{{modPhys}} {{physType}}{{/physType}}, [[{{fullElem}}]] {{elemType}})
+      div [Strike](`/me [[{{fullPhys}}]] {{physType}}, [[{{fullElem}}]] {{elemType}})
+      div [Crit](`/me [[{{critPhys}}]] {{physType}}, [[{{fullElem}}]] {{elemType}})
+      | {{#rollWasCrit() attack}}
+      div [Double](`/me [[{{dubPhys}}]] {{physType}}, [[{{fullElem}}]] {{elemType}})
+      | {{/rollWasCrit() attack}}

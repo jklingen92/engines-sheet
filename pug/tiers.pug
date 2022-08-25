@@ -1,0 +1,32 @@
+mixin tier(tier)
+  .tier
+    .label
+      +chat(`${_.startCase(tier)} Tier`, utils.generateTierDescription(constants.hit_tier_descriptions[tier]))
+        +translate(`${tier}-up`)
+      
+    .value
+      block
+
+mixin calc-tier(tier, description)
+  +tier(tier, description)
+    +hover-input(`${tier}_tier`)(type="number")&attributes(attributes)
+
+
+.section 
+  .section-title 
+    +translate("hit-tiers-up")
+  +tier("exploit")
+    -Inf
+  +calc-tier("miss")
+  +calc-tier("dodge")
+  +calc-tier("glance")
+  +calc-tier("block")
+  +calc-tier("strike")
+  +tier("crit") +
+  +tier("double") ++
+
+  +update("dodge_tier", triggers.change(["size", "miss_tier"]), "calc_dodge_tier")
+  +update("miss_tier", triggers.change(["handling_mod"]), "calc_miss_tier")
+  +update("glance_tier", triggers.change(["dodge_tier", "handling_mod"]), "calc_glance_tier")
+  +update("block_tier", triggers.change(["glance_tier", "hardness"]), "calc_block_tier")
+  +update("strike_tier", triggers.change(["block_tier", "power_mod"]), "calc_strike_tier")

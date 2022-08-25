@@ -1,0 +1,17 @@
+
+mixin spec-block(name)
+  .spec-container
+    .spec-label 
+      +check(`${_.startCase(name)} check`, "1d20", [`${name}_mod`])(class="text-btn")
+        +translate(`${name}-up`)
+    .spec
+      +display(`${name}_mod`) 
+    .spec-base 
+      +hover-input(name)(type="number" class="base-input")
+
+  // Events
+  +update(`${name}_mod`, triggers.change([name]), `calc_spec_mod`)
+
+for spec in constants.specs 
+  +spec-block(spec)
+  

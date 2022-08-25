@@ -1,0 +1,13 @@
+.section.speed
+  .speed-container
+    .speed-side-container
+      +hover-input("speed")(type="number" class="speed-input")
+      +translate('speed-title')
+    .pipe |
+    .speed-side-container
+      div.speed-input.display
+        +display("handling_mod")
+      +initiative(class="text-btn")
+        +translate('init-title')
+
++update(`speed`, triggers.change(['power', 'proficiency']), `calc_speed`)
