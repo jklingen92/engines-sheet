@@ -450,8 +450,7 @@ button.sheet-blind-btn {
         border-radius: 5px;
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
-        padding: 0 20px;
+        padding-right: 15px; 
 
         .sheet-info {
             margin-right: $column-4-width * 0.1;

@@ -34,7 +34,7 @@ mixin action(event, functionName, dependencies)
   +event(event, functionName, { dependencies })
 
 mixin chat(title, text)
-  button(type="roll" name=`chat_${title}` value=`&{template:chat} {{title=${title}}} {{text=${text}}}`)
+  button(type="roll" name=`chat_${title}` value=`&{template:chat} {{title=${title}}} {{text=${text}}}`)&attributes(attributes)
     block
 
 mixin macro(macro)
@@ -110,7 +110,7 @@ mixin initialize()
     .initialize-screen
     .initialize-modal
       .content
-        | Welcome to E&E!
+        | Welcome to Engines &amp; Entropy!
         +button("initialize")
           | Initialize character 
         +action(triggers.action("initialize"), "initialize", ["initialized"])

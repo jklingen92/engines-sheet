@@ -15,5 +15,7 @@
         }, "medium")
       label Level:
         +input("level")(type="number")
+      label Frequency:
+        +input("natural_frequency")(type="number")
       
 +update("proficiency", triggers.change(["level"]), "calc_proficiency")

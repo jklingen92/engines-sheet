@@ -73,6 +73,7 @@ const constants = {
     hp: 0,
     hp_max: 0,
     speed: 12,
+    energy: 0
   },
   hit_tier_descriptions: {
     "exploit": {
@@ -82,7 +83,7 @@ const constants = {
     },
     "miss": {
       "calculation": "1 + HAN",
-      "description": "The attack misses without any action on the defending engine's part.",
+      "description": "The attack misses without any action on the defending engines part.",
       "damage": "0 Phys, 0 Elem, No contact"
     },
     "dodge": {
@@ -92,28 +93,28 @@ const constants = {
     },
     "glance": {
       "calculation": "Dodge + HAND",
-      "description": "The attack glances off of the defending engine's body.",
-      "damage": "0 Phys, 0D + [mod] Elem, Contact (defender's choice)"
+      "description": "The attack glances off of the defending engines body.",
+      "damage": "0 Phys, 0D + [mod] Elem, Contact (defenders choice)"
     },
     "block": {
       "calculation": "Glance + HARD",
       "description": "The attack forces the defending engine to block.",
-      "damage": "0D + [mod] Phys, xD + [mod] Elem, Contact (defender's choice)"
+      "damage": "0D + [mod] Phys, xD + [mod] Elem, Contact (defenders choice)"
     },
     "strike": {
       "calculation": "Block + POW",
       "description": "The attack strikes the defending engine.",
-      "damage": "xD + [mod] Phys, xD + [mod] Elem, Contact (attacker's choice)"
+      "damage": "xD + [mod] Phys, xD + [mod] Elem, Contact (attackers choice)"
     },
     "crit": {
       "calculation": "Strike + ^",
       "description": "The attack strikes the defending engine.",
-      "damage": "2xD + [mod] Phys, xD + [mod] Elem, Contact (attacker's choice)"
+      "damage": "2xD + [mod] Phys, xD + [mod] Elem, Contact (attackers choice)"
     },
     "double": {
       "calculation": "Strike + 2^",
       "description": "The attack strikes the defending engine.",
-      "damage": "3xD + [mod] Phys, xD + [mod] Elem, Contact (attacker's choice)"
+      "damage": "3xD + [mod] Phys, xD + [mod] Elem, Contact (attackers choice)"
     },
   }
 }

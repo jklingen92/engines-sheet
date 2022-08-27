@@ -1,7 +1,7 @@
 mixin tier(tier)
   .tier
     .label
-      +chat(`${_.startCase(tier)} Tier`, utils.generateTierDescription(constants.hit_tier_descriptions[tier]))
+      +chat(`${_.startCase(tier)} Tier`, utils.generateTierDescription(constants.hit_tier_descriptions[tier]))(class="text-btn")
         +translate(`${tier}-up`)
       
     .value
@@ -15,8 +15,7 @@ mixin calc-tier(tier, description)
 .section 
   .section-title 
     +translate("hit-tiers-up")
-  +tier("exploit")
-    -Inf
+  +tier("exploit") -∞
   +calc-tier("miss")
   +calc-tier("dodge")
   +calc-tier("glance")

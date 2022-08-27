@@ -1,3 +1,4 @@
+// Sheetworker functions
 const functions = {}
 
 functions["initialize"] = values => {

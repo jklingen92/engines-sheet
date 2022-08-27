@@ -21,7 +21,7 @@
     .header 
       span.title {{title}}
       span.results {{attack}}
-    .subtitle {{name}} spends {{decay}} energy
+    .subtitle {{name}} spends {{decay}} entropy
     .hit-tiers 
       | {{#elemType}}
       div [Glance](`/me {{modElem}} {{elemType}})
@@ -32,3 +32,4 @@
       | {{#rollWasCrit() attack}}
       div [Double](`/me [[{{dubPhys}}]] {{physType}}, [[{{fullElem}}]] {{elemType}})
       | {{/rollWasCrit() attack}}
+    
